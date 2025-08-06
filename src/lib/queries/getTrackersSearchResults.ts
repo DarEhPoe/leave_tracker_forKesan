@@ -53,7 +53,7 @@ export default async function getTrackerSearchResults(searchText: string) {
 
     return {
       ...row,
-      Total_leaving: totalLeaving,
+      Total_Leave: totalLeaving,
       Number_of_Days: dayLabel,
       Received_By_Supervisor: row.Received_By_Supervisor? "Approved" : "Not approved yet",
       Approved_By_Executive_Director: row.Approved_By_Executive_Director? "Approved" : "Not approved yet",

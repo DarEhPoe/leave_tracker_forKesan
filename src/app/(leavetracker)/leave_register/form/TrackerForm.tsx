@@ -238,7 +238,7 @@ export default function TicketForm({
                                     nameInSchema="returnDate"
                                 />
                                 <SelectWithLabel <insertTrackerSchemaType>
-                                    fieldTitle="Hours (optinal)"
+                                    fieldTitle="Hours (optional)"
                                     nameInSchema="totaltime"
                                     data={totaltime}
                                 />

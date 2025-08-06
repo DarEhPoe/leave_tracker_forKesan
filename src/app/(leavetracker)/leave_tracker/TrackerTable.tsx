@@ -73,7 +73,7 @@ export default function TrackerTable({ data }: Props) {
     "Date_of_Leave",
     "Number_of_Days",
     "Date_of_Return",
-    "Total_leaving",
+    "Total_Leave",
     "Received_By_Supervisor",
     "Approved_By_Executive_Director"
   ];
