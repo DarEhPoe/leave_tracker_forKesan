@@ -1,0 +1,1 @@
+ALTER TABLE "trackers" ADD COLUMN "approve" boolean DEFAULT false NOT NULL;

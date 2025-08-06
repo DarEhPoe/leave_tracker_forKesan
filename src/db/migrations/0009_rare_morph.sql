@@ -1,0 +1,1 @@
+ALTER TABLE "trackers" ALTER COLUMN "totaltime" SET DATA TYPE varchar;

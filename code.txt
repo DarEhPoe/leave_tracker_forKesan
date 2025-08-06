@@ -1,0 +1,40 @@
+const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setResponseMessage("");
+
+    // Ensure prayer.email exists
+    if (!prayer?.email) {
+      setResponseMessage("Error: No recipient email provided.");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          to: prayer.email,
+          subject: formData.subject,
+          body: formData.body, // Removed unnecessary template literal with space
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        setResponseMessage("Email sent successfully!");
+        setFormData({ subject: "", body: "" }); // Reset form
+      } else {
+        setResponseMessage(`Error: ${data.message}`);
+      }
+    } catch (error) {
+      setResponseMessage("Failed to send email. Please try again later.");
+      console.error("Submit Error:", error);
+    } finally {
+      setLoading(false);
+    }
+};
