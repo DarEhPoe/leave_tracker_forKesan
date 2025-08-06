@@ -21,7 +21,7 @@ const EMAIL_TO_SENDS = process.env.NEXT_PUBLIC_EMAIL_TO_SENDS
   ? JSON.parse(process.env.NEXT_PUBLIC_EMAIL_TO_SENDS)
   : {};
 const EMAIL_EXECUTIVE_DIRECTOR = process.env.NEXT_PUBLIC_EMAIL_OF_EXECUTIVE_DIRECTOR || "";
-const MAIN_URL = process.env.NEXT_PUBLIC_MAIN_URL || "http://localhost:3000";
+const MAIN_URL = process.env.NEXT_PUBLIC_MAIN_URL
 import { insertTrackerSchema,type insertTrackerSchemaType,type selectTrackerSchemaType
 
  } from "@/zod-schemas/tracker"

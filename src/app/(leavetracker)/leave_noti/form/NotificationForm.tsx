@@ -18,7 +18,7 @@ const EMAIL_FOR_SEND_NOTIFICATION = process.env.NEXT_PUBLIC_EMAIL_FOR_SEND_NOTIF
   ? JSON.parse(process.env.NEXT_PUBLIC_EMAIL_FOR_SEND_NOTIFICATION)
   : []; 
 
-const NEXT_PUBLIC_MAIN_URL = process.env.NEXT_PUBLIC_MAIN_URL || "http://localhost:3000";
+const NEXT_PUBLIC_MAIN_URL = process.env.NEXT_PUBLIC_MAIN_URL 
 
 type Props={
     employee:EmployeeSearchResultsType[0],
