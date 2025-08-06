@@ -21,6 +21,7 @@ const EMAIL_TO_SENDS = process.env.NEXT_PUBLIC_EMAIL_TO_SENDS
   ? JSON.parse(process.env.NEXT_PUBLIC_EMAIL_TO_SENDS)
   : {};
 const EMAIL_EXECUTIVE_DIRECTOR = process.env.NEXT_PUBLIC_EMAIL_OF_EXECUTIVE_DIRECTOR || "";
+const MAIN_URL = process.env.NEXT_PUBLIC_MAIN_URL || "http://localhost:3000";
 import { insertTrackerSchema,type insertTrackerSchemaType,type selectTrackerSchemaType
 
  } from "@/zod-schemas/tracker"
@@ -134,7 +135,7 @@ export default function TicketForm({
                                 <p>Dear Thara Paul Sein Twa and Program Directors,</p>
                                 <p>I hope this message finds you well.</p>
                                 <p>A leave request has been submitted by <strong>${username}</strong>. Kindly review the request at the following link:</p>
-                                <p><a href="http://localhost:3000/trackers_submit">Leave Request Link</a></p>
+                                <p><a href="${MAIN_URL}/trackers_submit">Leave Request Link</a></p>
                                 <p><span class="important">Important:</span></p>
                                 <ul>
                                     <li>As the Executive Director, your approval is required for this leave request to be processed.</li>

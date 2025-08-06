@@ -18,7 +18,7 @@ const EMAIL_FOR_SEND_NOTIFICATION = process.env.NEXT_PUBLIC_EMAIL_FOR_SEND_NOTIF
   ? JSON.parse(process.env.NEXT_PUBLIC_EMAIL_FOR_SEND_NOTIFICATION)
   : []; 
 
-const NEXT_MAIN_URL = process.env.NEXT_MAIN_URL || "http://localhost:3000";
+const NEXT_PUBLIC_MAIN_URL = process.env.NEXT_PUBLIC_MAIN_URL || "http://localhost:3000";
 
 type Props={
     employee:EmployeeSearchResultsType[0],
@@ -112,7 +112,7 @@ export default function TicketForm({
                                 <p>I hope this message finds you well. This notification was submitted by ${username}</p>
                                 <p>The detailed information is provided below</p>
                                 <p>${data?.notification}</p>
-                                <p><a href="${NEXT_MAIN_URL}/leave_notification/form?notificationId=${data?.id}">You can read in admin dashboard by clicking the link</a></p>
+                                <p><a href="${NEXT_PUBLIC_MAIN_URL}/leave_notification/form?notificationId=${data?.id}">You can read in admin dashboard by clicking the link</a></p>
                                 </div>
                             </body>
                             </html>
