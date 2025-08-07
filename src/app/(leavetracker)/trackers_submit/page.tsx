@@ -2,16 +2,59 @@ export const dynamic = 'force-dynamic';
 
 import TrackerTable from "@/app/(leavetracker)/trackers_submit/TrackerTable";
 import getAllTrackers from "@/lib/queries/getAllTrackers";
+import {getUserPermissions, getUserNameFromAuth} from "@/lib/getUserInfoFromKinde";
+import { getEmployeeSearchResults } from "@/lib/queries/getEmployeeSearchResults";
+import { getDepartment} from "@/lib/queries/getDepartment";
+import type { TrackerSearchResultsType } from "@/lib/queries/getTrackersSearchResults";
 
 export const metadata = {
   title: "TrackerSearch",
 };
 
 export default async function TrackerPage() {
-  // Fetch all trackers
-  const results = await getAllTrackers();
+  const permissions = await getUserPermissions();
+  const username = await getUserNameFromAuth();
+  const isAdmin = permissions.includes("admin");
+  const isManager = permissions.includes("manager");
 
-  // Filter where either Received or Approved is false
+
+  const employeeSearchByName = await getEmployeeSearchResults(username);
+  const employee_program = employeeSearchByName[0]?.program;
+  
+
+
+  let results: TrackerSearchResultsType = [];
+
+  if(isManager && isAdmin){
+    // If user has both admin and manager roles, show all trackers
+    const allTracker = await getAllTrackers();
+    results = allTracker;
+    console.log("Admin+Manager: showing all trackers", results.length);
+  }
+  else if(isManager){
+    // If user is only manager, filter by their program
+    const allTracker = await getAllTrackers();
+    console.log("Manager only: filtering by program", employee_program);
+    
+    const filteredByProgram = [];
+    for (const tracker of allTracker) {
+      const program_id = tracker.program;
+      const program = await getDepartment(Number(program_id));
+      console.log("tracker program:", program?.name, "employee program:", employee_program);
+      if (employee_program === program?.name) {
+        filteredByProgram.push(tracker);
+      }
+    }
+    results = filteredByProgram;
+    console.log("Manager filtered results:",results.length);
+  }
+  else {
+    // If neither admin nor manager, show empty results
+    results = [];
+    console.log("No admin/manager permissions: empty results");
+  }
+
+  // Filter where either Received or Approved is "Not approved yet"
   const filteredResults = results.filter((tracker) => {
     return (
       tracker.Received_By_Supervisor === "Not approved yet" ||

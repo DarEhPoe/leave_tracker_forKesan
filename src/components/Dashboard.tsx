@@ -12,11 +12,11 @@ import { EmployeeSearchResultsType } from '@/lib/queries/getEmployeeSearchResult
 import {ReactNode,useContext } from "react";
 import { usePathname } from 'next/navigation'
 import { DialogTitle } from "@radix-ui/react-dialog"; 
+import Image from 'next/image';
 
 
 import DataContext from "@/context/DataContext"
 import {
-  Home,
   Menu,
   FilePlus,
   Send,
@@ -87,7 +87,7 @@ export default function ResponsiveTable(
 
               <div className="space-y-4 mt-4">
 
-                { permissions.includes("admin") && permissions.includes("manager") && !isLeaveRegister ? (
+                { (permissions.includes("admin") || permissions.includes("manager")) && !isLeaveRegister ? (
                   <div className="cursor-pointer flex flex-col items-start w-full px-4 py-2 bg-muted hover:bg-muted/70 text-foreground rounded-md border border-border transition">
                     <Link
                         href="/trackers_submit" 
@@ -103,7 +103,7 @@ export default function ResponsiveTable(
                   </div>):null
                 }
 
-                { permissions.includes("admin") && permissions.includes("manager") && !isLeaveRegister ? (
+                {(permissions.includes("admin") && permissions.includes("manager")) && !isLeaveRegister ? (
                   <div className="cursor-pointer flex flex-col items-start w-full px-4 py-2 bg-muted hover:bg-muted/70 text-foreground rounded-md border border-border transition">
                     <Link
                         href="/leave_notification" 
@@ -118,7 +118,7 @@ export default function ResponsiveTable(
                   </div>):null
                 }
 
-                {permissions.includes("admin") && permissions.includes("manager") && !isLeaveRegister ? (
+                {(permissions.includes("admin") && permissions.includes("manager") )&& !isLeaveRegister ? (
                   <div className="cursor-pointer flex flex-col items-start w-full px-4 py-2 bg-muted hover:bg-muted/70 text-foreground rounded-md border border-border transition">
                     <DropdownViewByName employee={employee}>
                       <span className="text-sm font-medium select-none">View</span>
@@ -126,7 +126,7 @@ export default function ResponsiveTable(
                   </div>
                 ) : null}
 
-                {permissions.includes("admin") && permissions.includes("manager") && !isLeaveRegister ? (
+                {(permissions.includes("admin") && permissions.includes("manager") )&& !isLeaveRegister ? (
                   <div className="cursor-pointer flex flex-col items-start w-full px-4 py-2 bg-muted hover:bg-muted/70 text-foreground rounded-md border border-border transition">
                     <NavButtonMenu
                       icon={File}
@@ -141,7 +141,7 @@ export default function ResponsiveTable(
                   </div>
                 ) : null}
 
-                {permissions.includes("admin") && permissions.includes("manager") && !isLeaveRegister ? (
+                {(permissions.includes("admin") && permissions.includes("manager")) && !isLeaveRegister ? (
                   <div className="cursor-pointer flex flex-col items-start w-full px-4 py-2 bg-muted hover:bg-muted/70 text-foreground rounded-md border border-border transition">
                     <NavButtonMenu
                       icon={UsersRound}
@@ -156,7 +156,7 @@ export default function ResponsiveTable(
                   </div>
                 ) : null}
 
-                {permissions.includes("admin") && permissions.includes("manager") && !isLeaveRegister ? (
+                {(permissions.includes("admin") && permissions.includes("manager")) && !isLeaveRegister ? (
                   <div className="cursor-pointer flex flex-col items-start w-full px-4 py-2 bg-muted hover:bg-muted/70 text-foreground rounded-md border border-border transition">
                     <NavButtonMenu
                       icon={SettingsIcon}
@@ -173,7 +173,7 @@ export default function ResponsiveTable(
                   </div>
                 ) : null}
 
-                {permissions.includes("admin") && permissions.includes("manager") && !isLeaveRegister ? (
+                {(permissions.includes("admin") && permissions.includes("manager"))&& !isLeaveRegister ? (
                   <div className="cursor-pointer flex flex-col items-start w-full px-4 py-2 bg-muted hover:bg-muted/70 text-foreground rounded-md border border-border transition">
                     <DropDownMenuYear uniqueYears={uniqueYears}>
                       <span className="text-sm font-medium select-none">Export</span>
@@ -235,21 +235,33 @@ export default function ResponsiveTable(
           <div className='hidden sm:flex'>
 
             {
-              permissions.includes("admin") && permissions.includes("manager") && !isLeaveRegister? (
+              (permissions.includes("admin") || permissions.includes("manager")) && !isLeaveRegister? (
               <Link
                 href="/leave_tracker"
                 className="inline-flex items-center gap-2 px-4 py-2  text-lg font-bold  hover:opacity-60 transition-all duration-200 select-none"
                 title="Go to Leave Tracker Home"
               >
-                <Home className="w-12 h-12" />
+                <Image 
+                  src="/images/logo.png" 
+                  alt="KESAN Logo" 
+                  width={48}
+                  height={48}
+                  className="w-12 h-12" 
+                />
               </Link>
               ): (
               <Link
                 href="/leave_register"
                 className="inline-flex items-center gap-2 px-4 py-2  text-lg font-bold  hover:opacity-60 transition-all duration-200 select-none"
-                title="Go to Leave Tracker Home"
+                title="Go to Leave Register Home"
               >
-                <Home className="w-12 h-12" />
+                <Image 
+                  src="/images/logo.png" 
+                  alt="KESAN Logo" 
+                  width={48}
+                  height={48}
+                  className="w-12 h-12" 
+                />
               </Link>)
             }
 
@@ -271,7 +283,7 @@ export default function ResponsiveTable(
           <div className="space-y-4">
 
 
-            { permissions.includes("admin") && permissions.includes("manager") && !isLeaveRegister ? (
+            { (permissions.includes("admin") || permissions.includes("manager")) && !isLeaveRegister ? (
               <div className="cursor-pointer flex flex-col items-start w-full px-4 py-2 bg-muted hover:bg-muted/70 text-foreground rounded-md border border-border transition">
                 <Link
                     href="/trackers_submit" 
@@ -285,7 +297,7 @@ export default function ResponsiveTable(
               </div>):null
             }
 
-            { permissions.includes("admin") && permissions.includes("manager") && !isLeaveRegister ? (
+            { (permissions.includes("admin") && permissions.includes("manager")) && !isLeaveRegister ? (
               <div className="cursor-pointer flex flex-col items-start w-full px-4 py-2 bg-muted hover:bg-muted/70 text-foreground rounded-md border border-border transition">
                 <Link
                     href="/leave_notification" 
@@ -299,7 +311,7 @@ export default function ResponsiveTable(
             }
             
 
-            {permissions.includes("admin") && permissions.includes("manager") && !isLeaveRegister ? (
+            {(permissions.includes("admin") && permissions.includes("manager")) && !isLeaveRegister ? (
               <div className="cursor-pointer flex flex-col items-start w-full px-4 py-2 bg-muted hover:bg-muted/70 text-foreground rounded-md border border-border transition">
                 <DropdownViewByName employee={employee}>
                   <span className="text-sm font-medium select-none">View</span>
@@ -307,7 +319,7 @@ export default function ResponsiveTable(
               </div>
             ) : null}
 
-            { permissions.includes("admin") && permissions.includes("manager") && !isLeaveRegister ? (
+            { (permissions.includes("admin") && permissions.includes("manager")) && !isLeaveRegister ? (
               <div className="cursor-pointer flex flex-col items-start w-full px-4 py-2 bg-muted hover:bg-muted/70 text-foreground rounded-md border border-border transition">
                 <NavButtonMenu
                   icon={File}
@@ -323,7 +335,7 @@ export default function ResponsiveTable(
             }
 
             {
-              permissions.includes("admin") && permissions.includes("manager") &&!isLeaveRegister ? (
+              (permissions.includes("admin") && permissions.includes("manager")) &&!isLeaveRegister ? (
 
                 <div className="cursor-pointer flex flex-col items-start w-full px-4 py-2 bg-muted hover:bg-muted/70 text-foreground rounded-md border border-border transition">
                   <NavButtonMenu
@@ -341,7 +353,7 @@ export default function ResponsiveTable(
 
             }
 
-            {permissions.includes("admin") && permissions.includes("manager") && !isLeaveRegister ? (
+            {(permissions.includes("admin") && permissions.includes("manager")) && !isLeaveRegister ? (
               <div className="cursor-pointer flex flex-col items-start w-full px-4 py-2 bg-muted hover:bg-muted/70 text-foreground rounded-md border border-border transition">
                 <NavButtonMenu
                   icon={SettingsIcon}
@@ -360,7 +372,7 @@ export default function ResponsiveTable(
 
 
             {
-              permissions.includes("admin") && permissions.includes("manager")&& !isLeaveRegister ? (            
+              (permissions.includes("admin") && permissions.includes("manager")) && !isLeaveRegister ? (
                 <div className="cursor-pointer flex flex-col items-start w-full px-4 py-2 bg-muted hover:bg-muted/70 text-foreground rounded-md border border-border transition">
                 <DropDownMenuYear uniqueYears={uniqueYears}>
                   <span className="text-sm font-medium select-none">Export</span>

@@ -8,6 +8,7 @@ export default async function getAllTrackers() {
       id: trackers.id,
       trackersDate: trackers.createdAt,
       employeeId: trackers.employeeId,
+      program: employee.departmentId,
       name: employee.name,
       type: trackertypes.name,
       Date_of_Leave: trackers.leaveDate,
@@ -16,6 +17,7 @@ export default async function getAllTrackers() {
       Total_time: trackers.totaltime,
       Received_By_Supervisor: trackers.received,
       Approved_By_Executive_Director: trackers.approved,
+      
     })
     .from(trackers)
     .leftJoin(employee, eq(trackers.employeeId, employee.id))
