@@ -199,7 +199,7 @@ export default function TicketForm({
         <div className="flex flex-col gap-1 sm:px-9">
             <DisplayServerActionResponse result={saveResult}/>    
             <div>
-                <h2 className="text-2xl font-bold">{tracker?.id ? "Edit" : "New"} Leave Register Form {tracker?.id?`#${tracker.id}`:"Form"} </h2>
+                <h2 className="text-2xl font-bold">{tracker?.id ? "Edit" : "New"} Leave Register {tracker?.id?`#${tracker.id}`:"Form"} </h2>
             </div>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(submitForm)}

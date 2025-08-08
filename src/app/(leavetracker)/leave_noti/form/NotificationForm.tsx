@@ -206,19 +206,23 @@ export default function TicketForm({
                                         nameInSchema="leaveDate"
                                     />
                                     
+                                 
+
+                            </div>
+
+                         
+                            <div className="flex flex-col w-full max-w-xs gap-8">
+
                                     <InputDateWithLabel<insertLeaveNotificationSchemaType>
                                         fieldTitle="Arrival Date"
                                         nameInSchema="arrivalDate"
-                                    />                                   
+                                    />   
 
-                            </div>
-                            <div className="flex flex-col w-full max-w-xs gap-8">
                                     <TextareaWithLabel<insertLeaveNotificationSchemaType>
                                         fieldTitle="Description"
                                         nameInSchema="description"
                                     />
-                                    
-                                 
+
                             </div>                            
                         </div>
                         <div className="flex flex-col gap-4 w-full max-w-xs">
