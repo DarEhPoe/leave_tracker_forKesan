@@ -1,1 +1,0 @@
-ALTER TABLE "trackers" DROP COLUMN "leave_time";

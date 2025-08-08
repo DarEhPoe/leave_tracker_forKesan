@@ -1,2 +1,0 @@
-ALTER TABLE "leavenotification" ADD COLUMN "employee_id" integer;--> statement-breakpoint
-ALTER TABLE "leavenotification" ADD CONSTRAINT "leavenotification_employee_id_employee_id_fk" FOREIGN KEY ("employee_id") REFERENCES "public"."employee"("id") ON DELETE no action ON UPDATE no action;

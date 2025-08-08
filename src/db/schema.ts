@@ -41,7 +41,12 @@ export const trackers = pgTable("trackers", {
 export const leavenotification = pgTable("leavenotification", {
   id: serial("id").primaryKey(),
   employeeId: integer("employee_id").references(() => employee.id), // Remove .nullable()
-  notification: text("notification").notNull(), 
+  fullName:varchar("full_name",{length:255}).notNull(),
+  program:varchar("program",{length:255}).notNull(),
+  travelWith:varchar("travel_with",{length:255}).notNull(),
+  description: text("description").notNull(), 
+  leaveDate:date("leave_date").notNull(),
+  arrivalDate:date("arrival_date").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow().$onUpdate(() => new Date()),
 });

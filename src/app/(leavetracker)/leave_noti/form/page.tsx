@@ -27,10 +27,19 @@ export const dynamic = 'force-dynamic';
 export default async function TrackerFormPage() {
     const username= await getUserNameFromAuth()
     const employees = await getEmployeeSearchResults(username);
-    console.log("Employee",employees)
+
+    // Handle case where no employees are found
+    if (!employees || employees.length === 0) {
+        return (
+            <div className="flex flex-col gap-4 p-6">
+                <h2 className="text-2xl font-bold text-red-600">Error</h2>
+                <p>No employee data found. Please contact your administrator.</p>
+            </div>
+        )
+    }
 
     return (
-      <TrackerForm employee={employees[0]} username={username}/>
+      <TrackerForm employee={employees[0]} username={username} />
     )
 
 }

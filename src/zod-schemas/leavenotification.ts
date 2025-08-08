@@ -5,9 +5,14 @@ import { z } from "zod";
 export const insertLeaveNotificationSchema = createInsertSchema(
   leavenotification,
   {
-    notification: () => z.string().min(1, "notification is required"),
+    fullName: () => z.string().min(1, "Full name is required"),
+    program: () => z.string().min(1, "Program is required"),
+    travelWith: () => z.string().min(1, "Travel with is required"),
+    description: () => z.string().min(1, "Description is required"),
+    leaveDate: () => z.string().min(1, "Leave date is required"),
+    arrivalDate: () => z.string().min(1, "Arrival date is required"),
     employeeId: () =>
-      z.union([z.number(), z.string().min(1, "employeeId is required")]),
+      z.union([z.number(), z.string().min(1, "Employee ID is required")]),
   }
 );
 

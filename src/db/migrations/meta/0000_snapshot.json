@@ -1,5 +1,5 @@
 {
-  "id": "0ed9a209-11a3-4025-9788-fbfe46c06037",
+  "id": "e74f4a49-0a35-4e28-895e-b822a81b2a06",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -16,7 +16,7 @@
         },
         "name": {
           "name": "name",
-          "type": "varchar",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
@@ -57,25 +57,13 @@
           "name": "department_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "name": {
           "name": "name",
-          "type": "varchar",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
-        },
-        "email": {
-          "name": "email",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "phone": {
-          "name": "phone",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
         },
         "created_at": {
           "name": "created_at",
@@ -109,22 +97,96 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "employee_email_unique": {
-          "name": "employee_email_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.leavenotification": {
+      "name": "leavenotification",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
         },
-        "employee_phone_unique": {
-          "name": "employee_phone_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "phone"
-          ]
+        "employee_id": {
+          "name": "employee_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "full_name": {
+          "name": "full_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "program": {
+          "name": "program",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "travel_with": {
+          "name": "travel_with",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "leave_date": {
+          "name": "leave_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "arrival_date": {
+          "name": "arrival_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
         }
       },
+      "indexes": {},
+      "foreignKeys": {
+        "leavenotification_employee_id_employee_id_fk": {
+          "name": "leavenotification_employee_id_employee_id_fk",
+          "tableFrom": "leavenotification",
+          "tableTo": "employee",
+          "columnsFrom": [
+            "employee_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -151,17 +213,43 @@
           "primaryKey": false,
           "notNull": true
         },
-        "start_time": {
-          "name": "start_time",
-          "type": "time",
+        "leave_date": {
+          "name": "leave_date",
+          "type": "date",
           "primaryKey": false,
           "notNull": true
         },
-        "end_time": {
-          "name": "end_time",
-          "type": "time",
+        "return_date": {
+          "name": "return_date",
+          "type": "date",
           "primaryKey": false,
           "notNull": true
+        },
+        "leaveday": {
+          "name": "leaveday",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "totaltime": {
+          "name": "totaltime",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "approved": {
+          "name": "approved",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "received": {
+          "name": "received",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
         },
         "created_at": {
           "name": "created_at",
@@ -225,7 +313,7 @@
         },
         "name": {
           "name": "name",
-          "type": "varchar",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },

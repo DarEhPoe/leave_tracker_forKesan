@@ -7,8 +7,13 @@ export async function getAllNotification() {
         id: leavenotification.id,
         notificationDate: leavenotification.createdAt,
         employeeId: leavenotification.employeeId,
-        employeeName: employee.name, // Assuming `name` is a field in `employee`
-        notification: leavenotification.notification,
+        employeeName: employee.name, // Employee name from joined table
+        fullName: leavenotification.fullName,
+        program: leavenotification.program,
+        travelWith: leavenotification.travelWith,
+        description: leavenotification.description,
+        leaveDate: leavenotification.leaveDate,
+        arrivalDate: leavenotification.arrivalDate,
     })
     .from(leavenotification)
     .leftJoin(employee, eq(leavenotification.employeeId, employee.id))

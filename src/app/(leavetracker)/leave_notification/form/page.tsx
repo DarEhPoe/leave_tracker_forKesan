@@ -1,6 +1,6 @@
 
 export const dynamic = 'force-dynamic';
-import NotificationTable from "@/app/(leavetracker)/leave_notification/form/NotificationTable";
+import NotificationDisplay from "@/app/(leavetracker)/leave_notification/form/NotificationTable";
 import { getNotification } from "@/lib/queries/getNotification";
 export async function generateMetadata({
   searchParams,
@@ -24,12 +24,11 @@ export default async function TrackerFormPage({
   }) {
     
       const { notificationId } = await searchParams;
-      const text= await getNotification(Number(notificationId))
+      const notificationData = await getNotification(Number(notificationId))
   
         return (
-          <NotificationTable
-          text={text.notification}
-
+          <NotificationDisplay
+            data={notificationData}
           />
         );
 

@@ -33,21 +33,49 @@ export const saveLeaveNotification = actionClient
 
     if (!notification.id || notification.id === 0) {
       const inserted = await db.insert(leavenotification).values({
-        notification: notification.notification,
+        fullName: notification.fullName,
+        program: notification.program,
+        travelWith: notification.travelWith,
+        description: notification.description,
+        leaveDate: notification.leaveDate,
+        arrivalDate: notification.arrivalDate,
         employeeId,
       }).returning();
 
-      return { message: `Your leave notification has been created successfully`, id: inserted[0]?.id , notification:inserted[0]?.notification};
+      return { 
+        message: `Your leave notification has been created successfully`, 
+        id: inserted[0]?.id,
+        fullName: inserted[0]?.fullName,
+        program: inserted[0]?.program,
+        travelWith: inserted[0]?.travelWith,
+        description: inserted[0]?.description,
+        leaveDate: inserted[0]?.leaveDate,
+        arrivalDate: inserted[0]?.arrivalDate,
+      };
     }
 
-    await db
+    const updated = await db
       .update(leavenotification)
       .set({
-        notification: notification.notification,
+        fullName: notification.fullName,
+        program: notification.program,
+        travelWith: notification.travelWith,
+        description: notification.description,
+        leaveDate: notification.leaveDate,
+        arrivalDate: notification.arrivalDate,
         employeeId,
       })
       .where(eq(leavenotification.id, notification.id))
       .returning();
 
-    return { message: `Your leave notification has been updated successfully` ,id:leavenotification.id};
+    return { 
+      message: `Your leave notification has been updated successfully`, 
+      id: notification.id,
+      fullName: updated[0]?.fullName,
+      program: updated[0]?.program,
+      travelWith: updated[0]?.travelWith,
+      description: updated[0]?.description,
+      leaveDate: updated[0]?.leaveDate,
+      arrivalDate: updated[0]?.arrivalDate,
+    };
   });

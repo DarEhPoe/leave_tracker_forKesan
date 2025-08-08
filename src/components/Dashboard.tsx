@@ -63,8 +63,15 @@ export default function ResponsiveTable(
   return (
     <div className="flex flex-col h-dvh bg-background text-foreground">
       {/* Top Navigation */}
-      <div className="flex items-center justify-between px-8 py-8 border-b border-border bg-card sticky top-0 z-50">
-        <div className="flex h-8 items-center justify-between w-full">
+      <div className="flex items-center justify-between px-8 py-8 border-b border-border bg-card/90 sticky top-0 z-50 relative overflow-hidden">
+        {/* Top Navigation Background Image */}
+        <Image
+          src="/images/background2.JPG"
+          alt="Top Navigation Background"
+          fill
+          className="object-cover opacity-100 z-0 pointer-events-none"
+        />
+        <div className="flex h-8 items-center justify-between w-full relative z-10">
 
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
@@ -279,8 +286,15 @@ export default function ResponsiveTable(
       </div>
       <div className="flex flex-1">
         {/* Sidebar */}
-        <div className="hidden sm:fixed sm:top-[88px] sm:bottom-0 sm:left-0 sm:flex sm:w-64 flex-col justify-between p-4 border-r border-border bg-card z-40 pt-12">
-          <div className="space-y-4">
+        <div className="hidden sm:fixed sm:top-[88px] sm:bottom-0 sm:left-0 sm:flex sm:w-64 flex-col justify-between p-4 border-r border-border bg-card/90 z-40 pt-12 relative overflow-hidden">
+          {/* Sidebar Background Image */}
+          <Image
+            src="/images/background2.JPG"
+            alt="Sidebar Background"
+            fill
+            className="object-cover opacity-100 z-0 pointer-events-none"
+          />
+          <div className="space-y-4 relative z-10">
 
 
             { (permissions.includes("admin") || permissions.includes("manager")) && !isLeaveRegister ? (

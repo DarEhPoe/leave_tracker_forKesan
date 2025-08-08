@@ -1,1 +1,0 @@
-ALTER TABLE "trackers" ADD COLUMN "leave_time" time;

@@ -10,3 +10,5 @@ export async function getNotification(id:number) {
 
     return results[0];
 }
+
+export type getNotificationType = Awaited<ReturnType<typeof getNotification>>;

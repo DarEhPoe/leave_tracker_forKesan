@@ -12,6 +12,8 @@ import {DisplayServerActionResponse} from "@/components/DisplayServerActionRespo
 import {insertLeaveNotificationSchemaType,insertLeaveNotificationSchema} from "@/zod-schemas/leavenotification"
 import { Form } from "@/components/ui/form"
 import { TextareaWithLabel } from "@/components/inputs/textInputWithLabel";
+import { InputWithLabel } from "@/components/inputs/InputWithLabel";
+import { InputDateWithLabel } from "@/components/inputs/inputDateWithLabel";
 
 // Use NEXT_PUBLIC_EMAIL_FOR_SEND_NOTIFICATION for client-side env variable
 const EMAIL_FOR_SEND_NOTIFICATION = process.env.NEXT_PUBLIC_EMAIL_FOR_SEND_NOTIFICATION
@@ -22,7 +24,7 @@ const NEXT_PUBLIC_MAIN_URL = process.env.NEXT_PUBLIC_MAIN_URL
 
 type Props={
     employee:EmployeeSearchResultsType[0],
-    username:string
+    username:string,
 }
 
 export default function TicketForm({
@@ -33,7 +35,12 @@ export default function TicketForm({
     const defaultValues:insertLeaveNotificationSchemaType={
         id:0,
         employeeId: employee.id,
-        notification:"",
+        fullName: employee.name, // Pre-populate with actual employee name
+        program: employee.program || "", // Pre-populate with employee program
+        travelWith: "",
+        description: "",
+        leaveDate: "",
+        arrivalDate: "",
         }
     const form=useForm<insertLeaveNotificationSchemaType>({
         mode:"onBlur",
@@ -52,6 +59,8 @@ export default function TicketForm({
                 toast.success("Success!", {
                     description: data?.message,
                 });
+
+
 
                 // Defensive check for empty recipients
                 if (!EMAIL_FOR_SEND_NOTIFICATION || EMAIL_FOR_SEND_NOTIFICATION.length === 0) {
@@ -110,8 +119,13 @@ export default function TicketForm({
                                 <h2>Notification: Field Project Activity</h2>
                                 <p>Dear Admin and Program Directors,</p>
                                 <p>I hope this message finds you well. This notification was submitted by ${username}</p>
-                                <p>The detailed information is provided below</p>
-                                <p>${data?.notification}</p>
+                                <p>The detailed information is provided below:</p>
+                                <p><strong>Full Name:</strong> ${data?.fullName}</p>
+                                <p><strong>Program:</strong> ${data?.program}</p>
+                                <p><strong>Travel With:</strong> ${data?.travelWith}</p>
+                                <p><strong>Description:</strong> ${data?.description}</p>
+                                <p><strong>Leave Date:</strong> ${data?.leaveDate}</p>
+                                <p><strong>Arrival Date:</strong> ${data?.arrivalDate}</p>
                                 <p><a href="${NEXT_PUBLIC_MAIN_URL}/leave_notification/form?notificationId=${data?.id}">You can read in admin dashboard by clicking the link</a></p>
                                 </div>
                             </body>
@@ -172,12 +186,40 @@ export default function TicketForm({
                     <div className="flex flex-col gap-4 w-full ">
                         <div className="flex flex-col sm:flex-row gap-8">
                             <div className="flex flex-col w-full max-w-xs gap-8">
-                                <TextareaWithLabel <insertLeaveNotificationSchemaType>
-                                    fieldTitle="Notification"
-                                    nameInSchema="notification"
-                                />
+                                
+                                    <InputWithLabel<insertLeaveNotificationSchemaType>
+                                        fieldTitle="Full Name"
+                                        nameInSchema="fullName"
+                                    />
+                                    
+                                    <InputWithLabel<insertLeaveNotificationSchemaType>
+                                        fieldTitle="Program"
+                                        nameInSchema="program"
+                                    />
+                                    
+                                    <InputWithLabel<insertLeaveNotificationSchemaType>
+                                        fieldTitle="Travel With"
+                                        nameInSchema="travelWith"
+                                    />
+                                    <InputDateWithLabel<insertLeaveNotificationSchemaType>
+                                        fieldTitle="Leave Date"
+                                        nameInSchema="leaveDate"
+                                    />
+                                    
+                                    <InputDateWithLabel<insertLeaveNotificationSchemaType>
+                                        fieldTitle="Arrival Date"
+                                        nameInSchema="arrivalDate"
+                                    />                                   
 
                             </div>
+                            <div className="flex flex-col w-full max-w-xs gap-8">
+                                    <TextareaWithLabel<insertLeaveNotificationSchemaType>
+                                        fieldTitle="Description"
+                                        nameInSchema="description"
+                                    />
+                                    
+                                 
+                            </div>                            
                         </div>
                         <div className="flex flex-col gap-4 w-full max-w-xs">
                                 <div className="flex gap-2">
