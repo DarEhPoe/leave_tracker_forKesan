@@ -42,7 +42,7 @@ export default function NavButtonMenu({
             {children}
           </div>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
+    <DropdownMenuContent align="end" className="z-[10010]">
             {
                 choice.map(choice=>(
                     <DropdownMenuItem key={choice.title} asChild 
