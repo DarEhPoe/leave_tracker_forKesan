@@ -54,7 +54,7 @@ export  function SelectWithLabel<S>({
                             </SelectTrigger>
                         </FormControl>
 
-                        <SelectContent>
+                        <SelectContent className="z-[9999]">
                         {data.length > 0 ? (
                             data.map(item => (
                                 <SelectItem key={item.id.toString()} value={item.id.toString()}>

@@ -19,10 +19,12 @@ export const metadata: Metadata = {
   title: {
     template:'%s | KESAN Leave Tracker',
     default:'KESAN Leave Tracker'
-
   },
   description: "KESAN Leave Tracker",
-  applicationName:"KESAN Leave Tracker"
+  applicationName:"KESAN Leave Tracker",
+  icons: {
+    icon: "/favicon.ico"
+  }
 };
 
 
