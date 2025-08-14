@@ -34,7 +34,8 @@ export const saveLeaveNotification = actionClient
     if (!notification.id || notification.id === 0) {
       const inserted = await db.insert(leavenotification).values({
         fullName: notification.fullName,
-        program: notification.program,
+        activityType: notification.activityType,
+        departmentId: Number(notification.departmentId),
         travelWith: notification.travelWith,
         description: notification.description,
         leaveDate: notification.leaveDate,
@@ -46,7 +47,8 @@ export const saveLeaveNotification = actionClient
         message: `Your leave notification has been created successfully`, 
         id: inserted[0]?.id,
         fullName: inserted[0]?.fullName,
-        program: inserted[0]?.program,
+        activityType: inserted[0]?.activityType,
+        departmentId: inserted[0]?.departmentId,
         travelWith: inserted[0]?.travelWith,
         description: inserted[0]?.description,
         leaveDate: inserted[0]?.leaveDate,
@@ -58,7 +60,8 @@ export const saveLeaveNotification = actionClient
       .update(leavenotification)
       .set({
         fullName: notification.fullName,
-        program: notification.program,
+        activityType: notification.activityType,
+        departmentId: notification.departmentId,
         travelWith: notification.travelWith,
         description: notification.description,
         leaveDate: notification.leaveDate,
@@ -72,7 +75,8 @@ export const saveLeaveNotification = actionClient
       message: `Your leave notification has been updated successfully`, 
       id: notification.id,
       fullName: updated[0]?.fullName,
-      program: updated[0]?.program,
+      activityType: updated[0]?.activityType,
+      departmentId: updated[0]?.departmentId,
       travelWith: updated[0]?.travelWith,
       description: updated[0]?.description,
       leaveDate: updated[0]?.leaveDate,

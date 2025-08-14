@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { leavenotification, employee } from "@/db/schema";
+import { leavenotification, employee, departments } from "@/db/schema";
 import { asc, eq } from "drizzle-orm";
 
 export async function getAllNotification() {
@@ -9,7 +9,8 @@ export async function getAllNotification() {
         employeeId: leavenotification.employeeId,
         employeeName: employee.name, // Employee name from joined table
         fullName: leavenotification.fullName,
-        program: leavenotification.program,
+        program: departments.name, // Department name as program
+        activityType: leavenotification.activityType,
         travelWith: leavenotification.travelWith,
         description: leavenotification.description,
         leaveDate: leavenotification.leaveDate,
@@ -17,6 +18,7 @@ export async function getAllNotification() {
     })
     .from(leavenotification)
     .leftJoin(employee, eq(leavenotification.employeeId, employee.id))
+    .leftJoin(departments, eq(leavenotification.departmentId, departments.id))
     .orderBy(asc(leavenotification.updatedAt));
 
     return results;

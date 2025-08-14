@@ -61,9 +61,9 @@ export default function ResponsiveTable(
   const { isOpen,setIsOpen } = context;
 
   return (
-    <div className="flex flex-col h-dvh bg-background text-foreground">
+  <div className="flex flex-col h-dvh bg-background text-foreground">
       {/* Top Navigation */}
-      <div className="flex items-center justify-between px-8 py-8 border-b border-border bg-card/90 sticky top-0 z-50 relative overflow-hidden">
+          <div className="flex items-center justify-between px-8 py-8 border-b border-border bg-card/90 fixed top-0 left-0 w-full z-[9999] overflow-hidden">
         {/* Top Navigation Background Image */}
         <Image
           src="/images/background2.JPG"
@@ -85,7 +85,7 @@ export default function ResponsiveTable(
               </Button>
             </SheetTrigger>
 
-            <SheetContent side="left" className="px-4 py-4">
+            <SheetContent side="left" className="px-4 py-4 z-[10001]">
               <SheetHeader>
                 <DialogTitle asChild>
                   <h2 className="font-bold text-xl select-none">Menu</h2>
@@ -110,7 +110,7 @@ export default function ResponsiveTable(
                   </div>):null
                 }
 
-                {(permissions.includes("admin") && permissions.includes("manager")) && !isLeaveRegister ? (
+                {(permissions.includes("admin") || permissions.includes("manager")) && !isLeaveRegister ? (
                   <div className="cursor-pointer flex flex-col items-start w-full px-4 py-2 bg-muted hover:bg-muted/70 text-foreground rounded-md border border-border transition">
                     <Link
                         href="/leave_notification" 
@@ -119,7 +119,7 @@ export default function ResponsiveTable(
                     >
                       <div className='flex gap-3'>
                           <Bell className="w-8 h-8" ></Bell>
-                          <span className="text-sm font-medium select-none">View leave notification</span>
+                          <span className="text-sm font-medium select-none">View Travel notification</span>
                       </div>
                     </Link>
                   </div>):null
@@ -215,7 +215,7 @@ export default function ResponsiveTable(
                     >
                       <div className="flex items-center">
                         <Bell className="w-8 h-8"  />
-                        <span className="ml-4 text-sm font-medium select-none">Create Leave Noti</span>
+                        <span className="ml-4 text-sm font-medium select-none">Create Travel Noti</span>
                       </div>
                     </Link>
                   </div>):null
@@ -274,7 +274,9 @@ export default function ResponsiveTable(
 
           </div>
           <div className="flex items-center gap-4">
-            <ModeToggle/>
+            <div className="relative">
+              <ModeToggle />
+            </div>
             <Button variant="ghost" size="icon" aria-label="LogOut" title='LogOut' className='rounded-full' asChild>
                 <LogoutLink>
                   <LogOut></LogOut>
@@ -284,7 +286,7 @@ export default function ResponsiveTable(
             
         </div>
       </div>
-      <div className="flex flex-1">
+          <div className="flex flex-1 pt-24">
         {/* Sidebar */}
         <div className="hidden sm:fixed sm:top-[88px] sm:bottom-0 sm:left-0 sm:flex sm:w-64 flex-col justify-between p-4 border-r border-border bg-card/90 z-40 pt-12 relative overflow-hidden">
           {/* Sidebar Background Image */}
@@ -311,14 +313,14 @@ export default function ResponsiveTable(
               </div>):null
             }
 
-            { (permissions.includes("admin") && permissions.includes("manager")) && !isLeaveRegister ? (
+            { (permissions.includes("admin") || permissions.includes("manager")) && !isLeaveRegister ? (
               <div className="cursor-pointer flex flex-col items-start w-full px-4 py-2 bg-muted hover:bg-muted/70 text-foreground rounded-md border border-border transition">
                 <Link
                     href="/leave_notification" 
                 >
                   <div className='flex gap-3'>
                       <Bell className="w-8 h-8" ></Bell>
-                      <span className="text-sm font-medium select-none">View leave notification</span>
+                      <span className="text-sm font-medium select-none">View travel notification</span>
                   </div>
                 </Link>
               </div>):null
@@ -413,7 +415,7 @@ export default function ResponsiveTable(
                 <Link href="/leave_noti/form" className="w-full">
                   <div className="flex items-center">
                     <Bell className="w-8 h-8" />
-                    <span className="ml-4 text-sm font-medium select-none">Create Leave Noti</span>
+                    <span className="ml-4 text-sm font-medium select-none">Create Travel Noti</span>
                   </div>
                 </Link>
               </div>):null
@@ -426,7 +428,7 @@ export default function ResponsiveTable(
                   label="View Menu"
                   choice={[
                     { title: "View Leave Register", href: "/leave_register" },
-                    { title: "View Leave Noti", href: "/leave_noti" },
+                    { title: "View Traval Noti", href: "/leave_noti" },
                   ]}
                 >
                   <span className="text-sm font-medium select-none">View</span>

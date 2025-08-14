@@ -40,13 +40,14 @@ export const trackers = pgTable("trackers", {
 
 export const leavenotification = pgTable("leavenotification", {
   id: serial("id").primaryKey(),
-  employeeId: integer("employee_id").references(() => employee.id), // Remove .nullable()
-  fullName:varchar("full_name",{length:255}).notNull(),
-  program:varchar("program",{length:255}).notNull(),
-  travelWith:varchar("travel_with",{length:255}).notNull(),
-  description: text("description").notNull(), 
-  leaveDate:date("leave_date").notNull(),
-  arrivalDate:date("arrival_date").notNull(),
+  employeeId: integer("employee_id").references(() => employee.id),
+  departmentId: integer("department_id").references(() => departments.id),
+  fullName: varchar("full_name", { length: 255 }).notNull(),
+  activityType: varchar("activity_type", { length: 255 }).notNull(),
+  travelWith: varchar("travel_with", { length: 255 }).notNull(),
+  description: text("description").notNull(),
+  leaveDate: date("leave_date").notNull(),
+  arrivalDate: date("arrival_date").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow().$onUpdate(() => new Date()),
 });
@@ -54,14 +55,19 @@ export const leavenotification = pgTable("leavenotification", {
 // Relations
 export const departmentsRelations = relations(departments, ({ many }) => ({
   employees: many(employee),
+  leavenotifications: many(leavenotification),
 }));
 
 export const leavenotificationRelations=relations(leavenotification,({one})=>({
-    department: one(employee, {
-      fields: [leavenotification.employeeId],
-      references: [employee.id],
+  employee: one(employee, {
+    fields: [leavenotification.employeeId],
+    references: [employee.id],
   }),
-}))
+  department: one(departments, {
+    fields: [leavenotification.departmentId],
+    references: [departments.id],
+  }),
+}));
 
 export const employeeRelations = relations(employee,({ many, one }) => ({
   trackers: many(trackers),

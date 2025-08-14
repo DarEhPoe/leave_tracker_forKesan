@@ -1,0 +1,1 @@
+ALTER TABLE "leavenotification" ADD COLUMN "activity_type" varchar(255) NOT NULL;

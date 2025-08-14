@@ -6,7 +6,8 @@ export const insertLeaveNotificationSchema = createInsertSchema(
   leavenotification,
   {
     fullName: () => z.string().min(1, "Full name is required"),
-    program: () => z.string().min(1, "Program is required"),
+    activityType: () => z.string().min(1, "Activity type is required"),
+    departmentId: () => z.number(),
     travelWith: () => z.string().min(1, "Travel with is required"),
     description: () => z.string().min(1, "Description is required"),
     leaveDate: () => z.string().min(1, "Leave date is required"),

@@ -1,6 +1,7 @@
 import TrackerForm from "@/app/(leavetracker)/leave_noti/form/NotificationForm";
 import {getUserNameFromAuth} from "@/lib/getUserInfoFromKinde";
 import { getEmployeeSearchResults } from "@/lib/queries/getEmployeeSearchResults";
+import { getAllDepartment } from "@/lib/queries/getAllDepartment";
 
 
 export const dynamic = 'force-dynamic';
@@ -27,7 +28,11 @@ export const dynamic = 'force-dynamic';
 export default async function TrackerFormPage() {
     const username= await getUserNameFromAuth()
     const employees = await getEmployeeSearchResults(username);
-
+    const department = await getAllDepartment();
+    const departmentData = department.map((data) => ({
+      id: data.id,
+      description: data.name,
+    }));
     // Handle case where no employees are found
     if (!employees || employees.length === 0) {
         return (
@@ -39,7 +44,7 @@ export default async function TrackerFormPage() {
     }
 
     return (
-      <TrackerForm employee={employees[0]} username={username} />
+      <TrackerForm employee={employees[0]} username={username} departmentType={departmentData} />
     )
 
 }

@@ -14,6 +14,7 @@ import { Form } from "@/components/ui/form"
 import { TextareaWithLabel } from "@/components/inputs/textInputWithLabel";
 import { InputWithLabel } from "@/components/inputs/InputWithLabel";
 import { InputDateWithLabel } from "@/components/inputs/inputDateWithLabel";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 
 // Use NEXT_PUBLIC_EMAIL_FOR_SEND_NOTIFICATION for client-side env variable
 const EMAIL_FOR_SEND_NOTIFICATION = process.env.NEXT_PUBLIC_EMAIL_FOR_SEND_NOTIFICATION
@@ -25,10 +26,12 @@ const NEXT_PUBLIC_MAIN_URL = process.env.NEXT_PUBLIC_MAIN_URL
 type Props={
     employee:EmployeeSearchResultsType[0],
     username:string,
+    departmentType:DataObj[],
+
 }
 
 export default function TicketForm({
-    employee,username
+    employee,username,departmentType
 }:Props){
 
 
@@ -36,12 +39,13 @@ export default function TicketForm({
         id:0,
         employeeId: employee.id,
         fullName: employee.name, // Pre-populate with actual employee name
-        program: employee.program || "", // Pre-populate with employee program
+        activityType: "",
+        departmentId: typeof employee.departmentId === "number" ? employee.departmentId : 0,
         travelWith: "",
         description: "",
         leaveDate: "",
         arrivalDate: "",
-        }
+    }
     const form=useForm<insertLeaveNotificationSchemaType>({
         mode:"onBlur",
         resolver:zodResolver(insertLeaveNotificationSchema),
@@ -74,7 +78,7 @@ export default function TicketForm({
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
                         to: allEmails,
-                        subject: "Notification of Field Project Activity",
+                        subject: `Notification of ${data?.activityType}`,
                         body: `
                             <html>
                             <head>
@@ -116,12 +120,12 @@ export default function TicketForm({
                             </head>
                             <body>
                                 <div class="email-container">
-                                <h2>Notification: Field Project Activity</h2>
+                                <h2>Notification: ${data?.activityType}</h2>
                                 <p>Dear Admin and Program Directors,</p>
                                 <p>I hope this message finds you well. This notification was submitted by ${username}</p>
                                 <p>The detailed information is provided below:</p>
                                 <p><strong>Full Name:</strong> ${data?.fullName}</p>
-                                <p><strong>Program:</strong> ${data?.program}</p>
+                                <p><strong>Activity Type:</strong> ${data?.activityType}</p>
                                 <p><strong>Travel With:</strong> ${data?.travelWith}</p>
                                 <p><strong>Description:</strong> ${data?.description}</p>
                                 <p><strong>Leave Date:</strong> ${data?.leaveDate}</p>
@@ -177,7 +181,7 @@ export default function TicketForm({
         <div className="flex flex-col gap-1 sm:px-9">
             <DisplayServerActionResponse result={saveResult}/>    
             <div>
-                <h2 className="text-2xl font-bold">Create a new leave notification form.</h2>
+                <h2 className="text-2xl font-bold">Create a Travel notification.</h2>
             </div>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(submitForm)}
@@ -185,42 +189,72 @@ export default function TicketForm({
                 >
                     <div className="flex flex-col gap-4 w-full ">
                         <div className="flex flex-col sm:flex-row gap-8">
-                            <div className="flex flex-col w-full max-w-xs gap-8">
+                            <div className="flex flex-col w-full max-w-xs gap-6">
                                 
                                     <InputWithLabel<insertLeaveNotificationSchemaType>
                                         fieldTitle="Full Name"
                                         nameInSchema="fullName"
+                                        className="mb-2 px-3 py-2"
                                     />
-                                    
-                                    <InputWithLabel<insertLeaveNotificationSchemaType>
-                                        fieldTitle="Program"
-                                        nameInSchema="program"
-                                    />
+
+
+                                    <div className="flex flex-col gap-2 w-full max-w-xs mb-2">
+                                        <label className="text-base mb-2">Department</label>
+                                        <Select
+                                            value={form.watch("departmentId")?.toString()}
+                                            onValueChange={value => form.setValue("departmentId", Number(value))}
+                                        >
+                                            <SelectTrigger className="w-full" >
+                                                <SelectValue placeholder="Select department" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {departmentType.map(dep => (
+                                                    <SelectItem key={dep.id} value={dep.id.toString()}>{dep.description}</SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
                                     
                                     <InputWithLabel<insertLeaveNotificationSchemaType>
                                         fieldTitle="Travel With"
                                         nameInSchema="travelWith"
+                                        className="mb-2 px-3 py-2"
                                     />
                                     <InputDateWithLabel<insertLeaveNotificationSchemaType>
                                         fieldTitle="Leave Date"
                                         nameInSchema="leaveDate"
+                                        className="mb-2 px-3 py-2"
                                     />
                                     
                                  
 
                             </div>
-
-                         
-                            <div className="flex flex-col w-full max-w-xs gap-8">
-
+                            <div className="flex flex-col w-full max-w-xs gap-6 ">
+                                    <div className="flex flex-col gap-2 w-full max-w-xs mb-2">
+                                        <label className="text-base mb-2 ">Activity Type</label>
+                                        <Select
+                                            value={form.watch("activityType")}
+                                            onValueChange={value => form.setValue("activityType", value)}
+                                        >
+                                            <SelectTrigger className="w-full" >
+                                                <SelectValue placeholder="Select activity type" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="Field activity">Field activity</SelectItem>
+                                                <SelectItem value="Attend meeting">Attend meeting</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
                                     <InputDateWithLabel<insertLeaveNotificationSchemaType>
                                         fieldTitle="Arrival Date"
                                         nameInSchema="arrivalDate"
+                                        className="mb-2 px-3 py-2"
                                     />   
 
                                     <TextareaWithLabel<insertLeaveNotificationSchemaType>
                                         fieldTitle="Description"
                                         nameInSchema="description"
+                                        className="mb-2 px-3 py-2"
                                     />
 
                             </div>                            

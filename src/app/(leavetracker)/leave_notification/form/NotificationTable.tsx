@@ -9,6 +9,14 @@ type Props = {
 };
 
 export default function NotificationDisplay({ data }: Props) {
+            <div>
+              <label className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                Activity Type
+              </label>
+              <div className="text-lg text-gray-900 dark:text-white">
+                {data.activityType || 'N/A'}
+              </div>
+            </div>
   const router = useRouter();
 
   if (!data) {
@@ -95,7 +103,7 @@ export default function NotificationDisplay({ data }: Props) {
                 Created On
               </label>
               <div className="text-lg text-gray-900 dark:text-white">
-                {data.createdAt ? new Date(data.createdAt).toLocaleDateString() : 'N/A'}
+                {data ? new Date(data.createdAt).toLocaleDateString() : 'N/A'}
               </div>
             </div>
           </div>

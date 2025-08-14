@@ -65,13 +65,14 @@ export default function TrackerTable({ data }: Props) {
 
   const columnHeadersArray: Array<keyof RowType> = [
     "notificationDate",
-    "employeeName",
     "fullName",
     "program",
+    "activityType",
     "travelWith",
     "description",
     "leaveDate",
     "arrivalDate",
+    
   ];
 
   const columnHelper = createColumnHelper<RowType>();

@@ -33,7 +33,7 @@ className,
             render={({field})=>(
                 <FormItem>
                     <FormLabel
-                    className="text-base"
+                    className=" text-base mb-2"
                     htmlFor={nameInSchema}
                     >
                         {fieldTitle}
