@@ -228,7 +228,7 @@ export default function ResponsiveTable(
                       label="Leave Tracker Menu"
                       choice={[
                         { title: "View Leave Register", href: "/leave_register" },
-                        { title: "View Leave Noti", href: "/leave_noti" },
+                        { title: "View Travel Noti", href: "/leave_noti" },
                       ]}
                     >
                       <span className="text-sm font-medium select-none">View</span>
