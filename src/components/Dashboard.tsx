@@ -127,7 +127,7 @@ export default function ResponsiveTable(
 
                 {(permissions.includes("admin") && permissions.includes("manager") )&& !isLeaveRegister ? (
                   <div className="cursor-pointer flex flex-col items-start w-full px-4 py-2 bg-muted hover:bg-muted/70 text-foreground rounded-md border border-border transition">
-                    <DropdownViewByName employee={employee}>
+                    <DropdownViewByName employee={employee} dropdownClassName="z-[11000]">
                       <span className="text-sm font-medium select-none">View</span>
                     </DropdownViewByName>
                   </div>
@@ -181,11 +181,11 @@ export default function ResponsiveTable(
                 ) : null}
 
                 {(permissions.includes("admin") && permissions.includes("manager"))&& !isLeaveRegister ? (
-                  <div className="cursor-pointer flex flex-col items-start w-full px-4 py-2 bg-muted hover:bg-muted/70 text-foreground rounded-md border border-border transition">
-                    <DropDownMenuYear uniqueYears={uniqueYears}>
-                      <span className="text-sm font-medium select-none">Export</span>
-                    </DropDownMenuYear>
-                  </div>
+                    <div className="cursor-pointer flex flex-col items-start w-full px-4 py-2 bg-muted hover:bg-muted/70 text-foreground rounded-md border border-border transition relative">
+                      <DropDownMenuYear uniqueYears={uniqueYears} dropdownClassName="z-[11000]">
+                        <span className="text-sm font-medium select-none">Export</span>
+                      </DropDownMenuYear>
+                    </div>
                 ) : null}
 
                 {
@@ -390,7 +390,7 @@ export default function ResponsiveTable(
             {
               (permissions.includes("admin") && permissions.includes("manager")) && !isLeaveRegister ? (
                 <div className="cursor-pointer flex flex-col items-start w-full px-4 py-2 bg-muted hover:bg-muted/70 text-foreground rounded-md border border-border transition">
-                <DropDownMenuYear uniqueYears={uniqueYears}>
+                <DropDownMenuYear uniqueYears={uniqueYears} dropdownClassName="z-[11000]">
                   <span className="text-sm font-medium select-none">Export</span>
                 </DropDownMenuYear>
               </div>):null

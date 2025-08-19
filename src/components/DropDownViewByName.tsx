@@ -17,9 +17,10 @@ import { Search, LoaderCircle } from 'lucide-react';
 type Props = {
   children:ReactNode,
   employee: EmployeeSearchResultsType;
+  dropdownClassName?: string;
 };
 
-export default function DropdownViewByName({ employee ,children}: Props) {
+export default function DropdownViewByName({ employee ,children,dropdownClassName}: Props) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const context=useContext(DataContext);
@@ -60,7 +61,7 @@ export default function DropdownViewByName({ employee ,children}: Props) {
             {children}
           </div>
         </DropdownMenuTrigger>
-        <DropdownMenuContent>
+  <DropdownMenuContent className={dropdownClassName}>
           <DropdownMenuLabel>View Tracker summary by Person</DropdownMenuLabel>
           <DropdownMenuSeparator />
           {employee.length > 0 ? (

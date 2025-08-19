@@ -14,10 +14,11 @@ import {
 import { FileDown } from 'lucide-react';
 type Props={
   children:ReactNode,
-  uniqueYears:number[]
+  uniqueYears:number[],
+  dropdownClassName?: string
 }
 
-export default function ExportDropdown({ children,uniqueYears}:Props) {
+export default function ExportDropdown({ children,uniqueYears,dropdownClassName}:Props) {
   const [downloading, setDownloading] = useState(false);
   const router=useRouter();
 
@@ -68,9 +69,8 @@ export default function ExportDropdown({ children,uniqueYears}:Props) {
           <FileDown className="w-8 h-8" />
           {children}
         </div>
-
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent className={dropdownClassName}>
         <DropdownMenuLabel>Export summary by Year</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {uniqueYears.length > 0 ? (
@@ -90,7 +90,6 @@ export default function ExportDropdown({ children,uniqueYears}:Props) {
       </DropdownMenuContent>
       {downloading && (
         <Loading/>
-
       )}
     </DropdownMenu>
   );
