@@ -277,7 +277,7 @@ export default function ResponsiveTable(
             <div className="relative">
               <ModeToggle />
             </div>
-            <Button variant="ghost" size="icon" aria-label="LogOut" title='LogOut' className='rounded-full' asChild>
+            <Button variant="outline" size="icon" aria-label="LogOut" title='LogOut' className='rounded-full' asChild>
                 <LogoutLink>
                   <LogOut></LogOut>
                 </LogoutLink>
