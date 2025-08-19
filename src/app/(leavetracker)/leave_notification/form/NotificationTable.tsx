@@ -46,7 +46,7 @@ export default function NotificationDisplay({ data }: Props) {
       
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
         <h1 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
-          Leave Notification Details
+          Travel Notification Details
         </h1>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
