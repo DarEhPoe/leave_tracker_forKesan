@@ -26,7 +26,7 @@ export default async function TrackerPage(){
         <NotificationTable data={results} />
       ) : (
         <p className="mt-4 px-4 py-2 text-sm text-black/90 dark:text-white/70 bg-black/40 dark:bg-white/10 backdrop-blur-md rounded-md shadow-sm opacity-40">
-          No leave tracker found; you can add the new leave tracker in the menu.
+          No Travel notification found; you can add the new travel notification in the menu.
         </p>
       )}
     </div>
