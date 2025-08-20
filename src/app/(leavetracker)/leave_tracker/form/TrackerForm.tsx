@@ -64,19 +64,7 @@ export default function TicketForm({
     })    
 
     async function submitForm(data:insertTrackerSchemaType) {
-        toast(
-            "After you submit this leave request you can&apos;t update it. However, if you think there are any mistakes after submitting, you can still ask the admin to update it.",
-            {
-                action: {
-                    label: "Confirm Submit",
-                    onClick: () => executeSave(data),
-                },
-                cancel: {
-                    label: "Cancel",
-                    onClick: () => toast.dismiss(),
-                },
-            }
-        );
+        executeSave(data);
     }
 
     return(
