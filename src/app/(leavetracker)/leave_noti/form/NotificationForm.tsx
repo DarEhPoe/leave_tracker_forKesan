@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod"
 import {useAction} from "next-safe-action/hooks";
 import {saveLeaveNotification} from "@/app/actions/saveLeaveNotification"
-import {EmployeeSearchResultsType } from "@/lib/queries/getEmployeeSearchResults";
+import {EmployeeSearchResultsType } from "@/lib/queries/getEmployeeSearchResults";   
 import { toast } from "sonner"; // Correct import
 import { LoaderCircle } from "lucide-react";
 import {DisplayServerActionResponse} from "@/components/DisplayServerActionResponse";

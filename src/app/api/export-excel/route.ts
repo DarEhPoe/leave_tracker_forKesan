@@ -56,7 +56,11 @@ export async function POST(req: Request) {
     const alltracker = await getAllTrackers();
     const trackers = alltracker.filter((data) => {
       const trackerYear = new Date(data.trackersDate).getFullYear();
-      return trackerYear === year;
+      return (
+        trackerYear === year &&
+        data.Received_By_Supervisor === "Approved" &&
+        data.Approved_By_Executive_Director === "Approved"
+      );
     });
 
     const trackerTypes = await getAllTrackerType();

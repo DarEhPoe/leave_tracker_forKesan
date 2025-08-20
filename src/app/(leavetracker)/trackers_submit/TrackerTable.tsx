@@ -27,6 +27,7 @@ import {
   ArrowDown,
   ArrowUp,
   Check,
+  LoaderCircle
 } from "lucide-react";
 
 import { useRouter, useSearchParams } from "next/navigation";
@@ -34,7 +35,6 @@ import { useState, useMemo, useEffect } from "react";
 import usePolling from "@/hooks/usePolling";
 import Filter from "@/components/react-table/Filter";
 import { toast } from "sonner";
-
 import { approveTrackerAction } from "@/app/actions/approveTrackerAction";
 import { receiveTrackerAction } from "@/app/actions/receiveTrackerAction";
 
@@ -45,6 +45,7 @@ type Props = {
 type RowType = TrackerSearchResultsType[0];
 
 export default function TrackerTable({ data }: Props) {
+  const [isApproving, setIsApproving] = useState<{ id: number; type: "supervisor" | "executive" } | null>(null);
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -116,13 +117,17 @@ export default function TrackerTable({ data }: Props) {
         const received = row.original.Received_By_Supervisor;
         const id = row.original.id;
 
-        return received === "Approved" ? (
-          <span className="text-green-600 font-semibold">✅ Received</span>
-        ) : (
+        if (received === "Approved") {
+          return <span className="text-green-600 font-semibold">✅ Received</span>;
+        }
+        if (isApproving && isApproving.id === id && isApproving.type === "supervisor") {
+          return <LoaderCircle className="animate-spin mx-auto text-green-600" />;
+        }
+        return (
           <div className="flex cursor-pointer">
             <button
               onClick={async (e) => {
-                e.stopPropagation(); // ✅ Prevents row click
+                e.stopPropagation();
                 toast(
                   <div className="p-4 text-center max-w-xs sm:max-w-sm md:max-w-md flex flex-col items-center">
                     <p className="text-base mb-2 text-gray-900 dark:text-gray-100">
@@ -133,8 +138,10 @@ export default function TrackerTable({ data }: Props) {
                       <button
                         className="px-4 py-2 rounded bg-green-600 text-white font-semibold hover:bg-green-700 transition"
                         onClick={async () => {
+                          setIsApproving({ id, type: "supervisor" });
                           await receiveTrackerAction({ id });
                           toast.success("Received approved.");
+                          setIsApproving(null);
                           router.refresh();
                           toast.dismiss();
                         }}
@@ -160,7 +167,6 @@ export default function TrackerTable({ data }: Props) {
               <Check size={16} />
               Approve
             </button>
-
           </div>
         );
       };
@@ -179,13 +185,17 @@ export default function TrackerTable({ data }: Props) {
         const approved = row.original.Approved_By_Executive_Director;
         const id = row.original.id;
 
-        return approved === "Approved" ? (
-          <span className="text-green-600 font-semibold">✅ Approved</span>
-        ) : (
+        if (approved === "Approved") {
+          return <span className="text-green-600 font-semibold">✅ Approved</span>;
+        }
+        if (isApproving && isApproving.id === id && isApproving.type === "executive") {
+          return <LoaderCircle className="animate-spin mx-auto text-green-600" />;
+        }
+        return (
           <div className="flex cursor-pointer">
             <button
               onClick={async (e) => {
-                e.stopPropagation(); // ✅ prevent the row click
+                e.stopPropagation();
                 toast(
                   <div className="p-4 text-center max-w-xs sm:max-w-sm md:max-w-md flex flex-col items-center">
                     <p className="text-base mb-2 text-gray-900 dark:text-gray-100">
@@ -196,8 +206,10 @@ export default function TrackerTable({ data }: Props) {
                       <button
                         className="px-4 py-2 rounded bg-green-600 text-white font-semibold hover:bg-green-700 transition"
                         onClick={async () => {
+                          setIsApproving({ id, type: "executive" });
                           await approveTrackerAction({ id });
                           toast.success("Approval confirmed.");
+                          setIsApproving(null);
                           router.refresh();
                           toast.dismiss();
                         }}
@@ -223,7 +235,6 @@ export default function TrackerTable({ data }: Props) {
               <Check size={16} />
               Approve
             </button>
-
           </div>
         );
       };
