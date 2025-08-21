@@ -20,7 +20,9 @@ import { Form } from "@/components/ui/form"
 const EMAIL_TO_SENDS = process.env.NEXT_PUBLIC_EMAIL_TO_SENDS
   ? JSON.parse(process.env.NEXT_PUBLIC_EMAIL_TO_SENDS)
   : {};
-const EMAIL_EXECUTIVE_DIRECTOR = process.env.NEXT_PUBLIC_EMAIL_OF_EXECUTIVE_DIRECTOR || "";
+const EMAIL_EXECUTIVE_DIRECTOR = process.env.NEXT_PUBLIC_EMAIL_OF_EXECUTIVE_DIRECTOR
+    ? JSON.parse(process.env.NEXT_PUBLIC_EMAIL_OF_EXECUTIVE_DIRECTOR)
+    : [];
 const MAIN_URL = process.env.NEXT_PUBLIC_MAIN_URL
 import { insertTrackerSchema,type insertTrackerSchemaType,type selectTrackerSchemaType
 
@@ -81,8 +83,8 @@ export default function TicketForm({
             );
             if (foundKey) {
                 const emails = EMAIL_TO_SENDS[foundKey];
-                if (foundKey !== "Admin" && EMAIL_EXECUTIVE_DIRECTOR) {
-                    emails.push(EMAIL_EXECUTIVE_DIRECTOR);
+                if (foundKey !== "Admin" && EMAIL_EXECUTIVE_DIRECTOR.length > 0) {
+                    emails.push(...EMAIL_EXECUTIVE_DIRECTOR);
                 }
                 fetch("/api/send-email", {
                         method: "POST",
