@@ -134,15 +134,14 @@ export default function TicketForm({
                             <body>
                                 <div class="email-container">
                                 <h2>Leave Request Submission for Approval</h2>
-                                <p>Dear Thara Paul Sein Twa and Program Directors,</p>
+                                <p>Dear Executive Team and Program Directors,</p>
                                 <p>I hope this message finds you well.</p>
                                 <p>A leave request has been submitted by <strong>${username}</strong>. Kindly review the request at the following link:</p>
                                 <p><a href="${MAIN_URL}/trackers_submit">Leave Request Link</a></p>
                                 <p><span class="important">Important:</span></p>
                                 <ul>
-                                    <li>As the Executive Director, your approval is required for this leave request to be processed.</li>
-                                    <li>Additionally, one of the Program Directors must also approve this request.</li>
-                                    <li>If the request has already been approved by either party, no further action is needed.</li>
+                                    <li>Both the Executive Director <strong>and</strong> one of the Program Directors must approve this request for it to be processed.</li>
+                                    <li>If the request has already been approved by either party, no further action is needed from that party.</li>
                                 </ul>
                                 <p>Should you have any questions or require further information, please feel free to reach out.</p>
                                 <p>Thank you for your attention to this matter.</p>
