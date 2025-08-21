@@ -29,12 +29,10 @@ export default async function TrackerPage() {
     // If user has both admin and manager roles, show all trackers
     const allTracker = await getAllTrackers();
     results = allTracker;
-    console.log("Admin+Manager: showing all trackers", results.length);
   }
   else if(isManager){
     // If user is only manager, filter by their program
     const allTracker = await getAllTrackers();
-    console.log("Manager only: filtering by program", employee_program);
     
     const filteredByProgram = [];
     for (const tracker of allTracker) {
@@ -46,12 +44,10 @@ export default async function TrackerPage() {
       }
     }
     results = filteredByProgram;
-    console.log("Manager filtered results:",results.length);
   }
   else {
     // If neither admin nor manager, show empty results
     results = [];
-    console.log("No admin/manager permissions: empty results");
   }
 
   // Filter where either Received or Approved is "Not approved yet"
