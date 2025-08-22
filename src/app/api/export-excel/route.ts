@@ -59,7 +59,7 @@ export async function POST(req: Request) {
       return (
         trackerYear === year &&
         data.Received_By_Supervisor === "Approved" &&
-        data.Approved_By_Executive_Director === "Approved"
+        data.Approved_By_Executive_Team === "Approved"
       );
     });
 

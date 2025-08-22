@@ -21,7 +21,7 @@ export default async function TrackerPage({
     const filteredResults = results.filter((tracker) => {
         return (
           tracker.Received_By_Supervisor === "Approved" &&
-          tracker.Approved_By_Executive_Director === "Approved"
+          tracker.Approved_By_Executive_Team === "Approved"
         );
       });
     
@@ -45,7 +45,7 @@ export default async function TrackerPage({
   const filteredResults =  results.filter((tracker) => {
     return (
       tracker.Received_By_Supervisor === "Approved" &&
-      tracker.Approved_By_Executive_Director === "Approved"
+      tracker.Approved_By_Executive_Team === "Approved"
     );
   });
 

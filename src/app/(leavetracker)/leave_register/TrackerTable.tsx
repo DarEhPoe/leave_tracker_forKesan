@@ -75,7 +75,7 @@ export default function TrackerTable({ data }: Props) {
     "Date_of_Return",
     "Total_leaving",
     "Received_By_Supervisor",
-    "Approved_By_Executive_Director"
+    "Approved_By_Executive_Team"
   ];
 
   const columnHelper = createColumnHelper<RowType>();
@@ -133,7 +133,7 @@ export default function TrackerTable({ data }: Props) {
 
     if (col.id === "Approved_By_Executive_Director") {
       col.cell = ({ row }) => {
-        const status = row.original.Approved_By_Executive_Director;
+        const status = row.original.Approved_By_Executive_Team;
         return (
           <span className={status === "Approved" ? "font-semibold" : ""}>
             {status}

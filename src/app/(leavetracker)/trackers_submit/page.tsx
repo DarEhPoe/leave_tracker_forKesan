@@ -54,7 +54,7 @@ export default async function TrackerPage() {
   const filteredResults = results.filter((tracker) => {
     return (
       tracker.Received_By_Supervisor === "Not approved yet" ||
-      tracker.Approved_By_Executive_Director === "Not approved yet"
+      tracker.Approved_By_Executive_Team === "Not approved yet"
     );
   });
 

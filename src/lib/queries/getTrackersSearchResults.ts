@@ -15,7 +15,7 @@ export default async function getTrackerSearchResults(searchText: string) {
       Date_of_Return: trackers.returnDate,
       Total_time: trackers.totaltime,
       Received_By_Supervisor: trackers.received,
-      Approved_By_Executive_Director: trackers.approved,
+      Approved_By_Executive_Team: trackers.approved,
     })
     .from(trackers)
     .leftJoin(employee, eq(trackers.employeeId, employee.id))
@@ -56,7 +56,7 @@ export default async function getTrackerSearchResults(searchText: string) {
       Total_leaving: totalLeaving,
       Number_of_Days: dayLabel,
       Received_By_Supervisor: row.Received_By_Supervisor? "Approved" : "Not approved yet",
-      Approved_By_Executive_Director: row.Approved_By_Executive_Director? "Approved" : "Not approved yet",
+      Approved_By_Executive_Team: row.Approved_By_Executive_Team? "Approved" : "Not approved yet",
     };
   });
 

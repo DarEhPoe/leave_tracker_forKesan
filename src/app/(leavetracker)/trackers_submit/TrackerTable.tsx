@@ -66,7 +66,7 @@ export default function TrackerTable({ data }: Props) {
 
   const columnHeadersArray: Array<keyof RowType> = [
     "Received_By_Supervisor",
-    "Approved_By_Executive_Director",
+    "Approved_By_Executive_Team",
     "trackersDate",
     "name",
     "type",
@@ -180,9 +180,9 @@ export default function TrackerTable({ data }: Props) {
 
 
 
-    if (col.id === "Approved_By_Executive_Director") {
+    if (col.id === "Approved_By_Executive_Team") {
       col.cell = ({ row }) => {
-        const approved = row.original.Approved_By_Executive_Director;
+        const approved = row.original.Approved_By_Executive_Team;
         const id = row.original.id;
 
         if (approved === "Approved") {
