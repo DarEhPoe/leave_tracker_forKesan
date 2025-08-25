@@ -34,8 +34,8 @@ export const saveTrackerAction=actionClient
                 approved:tracker.approved,
                 received:tracker.received,
             }).returning({insertedId:trackers.id})
-        
-            return { message: `Tracker ID #${result[0].insertedId} created successfully` };
+
+            return { message: `Leave ID #${result[0].insertedId} has been created successfully` };
         }
 
         //updating ticket
@@ -53,5 +53,5 @@ export const saveTrackerAction=actionClient
             })
             .where(eq(trackers.id,tracker.id!))
             .returning({updatedId:trackers.id})
-        return {message:`Tracker ID #${result[0].updatedId} updated successfully`}
+        return {message:`Leave ID #${result[0].updatedId} has been updated successfully`}
     })
