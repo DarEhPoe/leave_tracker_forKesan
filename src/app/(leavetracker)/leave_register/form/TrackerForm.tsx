@@ -140,7 +140,7 @@ export default function TicketForm({
                                 <p><a href="${MAIN_URL}/trackers_submit">Leave Request Link</a></p>
                                 <p><span class="important">Important:</span></p>
                                 <ul>
-                                    <li>Both the Executive Director <strong>and</strong> one of the Program Directors must approve this request for it to be processed.</li>
+                                    <li>Both the Executive Team <strong>and</strong> one of the Program Directors must approve this request for it to be processed.</li>
                                     <li>If the request has already been approved by either party, no further action is needed from that party.</li>
                                 </ul>
                                 <p>Should you have any questions or require further information, please feel free to reach out.</p>
