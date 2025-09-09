@@ -16,12 +16,12 @@ import {DisplayServerActionResponse} from "@/components/DisplayServerActionRespo
 import { Form } from "@/components/ui/form"
 
 
-// Use NEXT_PUBLIC_EMAIL_TO_SENDS for client-side env variable, with safe fallback
-const EMAIL_TO_SENDS = process.env.NEXT_PUBLIC_EMAIL_TO_SENDS
-  ? JSON.parse(process.env.NEXT_PUBLIC_EMAIL_TO_SENDS)
+// Use NEXT_PUBLIC_PHONE_TO_SENDS for client-side env variable, with safe fallback
+const PHONE_TO_SENDS = process.env.NEXT_PUBLIC_PHONE_TO_SENDS
+  ? JSON.parse(process.env.NEXT_PUBLIC_PHONE_TO_SENDS)
   : {};
-const EMAIL_EXECUTIVE_DIRECTOR = process.env.NEXT_PUBLIC_EMAIL_OF_EXECUTIVE_DIRECTOR
-    ? JSON.parse(process.env.NEXT_PUBLIC_EMAIL_OF_EXECUTIVE_DIRECTOR)
+const PHONE_EXECUTIVE_DIRECTOR = process.env.NEXT_PUBLIC_PHONE_OF_EXECUTIVE_DIRECTOR
+    ? JSON.parse(process.env.NEXT_PUBLIC_PHONE_OF_EXECUTIVE_DIRECTOR)
     : [];
 const MAIN_URL = process.env.NEXT_PUBLIC_MAIN_URL
 import { insertTrackerSchema,type insertTrackerSchemaType,type selectTrackerSchemaType
@@ -68,7 +68,7 @@ export default function TicketForm({
         reset:resetSaveAction,
       }=useAction(saveTrackerAction,{
     
-            onSuccess({ data }) {
+            async onSuccess({ data }) {
 
             toast.success("Success!", {
                 description: data?.message,
@@ -78,88 +78,63 @@ export default function TicketForm({
 
             const programs: string = program.name;
             // Flexible matching for program name
-            const foundKey = Object.keys(EMAIL_TO_SENDS).find(
+            const foundKey = Object.keys(PHONE_TO_SENDS).find(
               key => key.toLowerCase() === programs.trim().toLowerCase()
             );
+            // ...existing code...
             if (foundKey) {
-                const emails = EMAIL_TO_SENDS[foundKey];
-                if (foundKey !== "Admin" && EMAIL_EXECUTIVE_DIRECTOR.length > 0) {
-                    emails.push(...EMAIL_EXECUTIVE_DIRECTOR);
+                // build list
+                let phonesToSend: string[] = [];
+                if (foundKey === "Admin") {
+                    phonesToSend = [...(PHONE_TO_SENDS[foundKey] ?? [])];
+                } else {
+                    phonesToSend = [...(PHONE_TO_SENDS[foundKey] ?? []), ...PHONE_EXECUTIVE_DIRECTOR];
                 }
-                fetch("/api/send-email", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                        to: emails,
-                        subject: "Leave Request Submission for Approval",
-                        body: `
-                            <html>
-                            <head>
-                                <style>
-                                body {
-                                    font-family: Arial, sans-serif;
-                                    color: #333;
-                                    margin: 0;
-                                    padding: 20px;
-                                    background-color: #f4f4f4;
-                                }
-                                .email-container {
-                                    background-color: #ffffff;
-                                    border-radius: 8px;
-                                    padding: 20px;
-                                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                                }
-                                h2 {
-                                    color: #333;
-                                }
-                                p {
-                                    font-size: 14px;
-                                    line-height: 1.6;
-                                }
-                                .important {
-                                    font-weight: bold;
-                                    color: #e74c3c;
-                                }
-                                a {
-                                    color: #3498db;
-                                    text-decoration: none;
-                                }
-                                .footer {
-                                    font-size: 12px;
-                                    color: #777;
-                                    margin-top: 20px;
-                                }
-                                </style>
-                            </head>
-                            <body>
-                                <div class="email-container">
-                                <h2>Leave Request Submission for Approval</h2>
-                                <p>Dear Executive Team and Program Directors,</p>
-                                <p>I hope this message finds you well.</p>
-                                <p>A leave request has been submitted by <strong>${username}</strong>. Kindly review the request at the following link:</p>
-                                <p><a href="${MAIN_URL}/trackers_submit">Leave Request Link</a></p>
-                                <p><span class="important">Important:</span></p>
-                                <ul>
-                                    <li>Both the Executive Team <strong>and</strong> one of the Program Directors must approve this request for it to be processed.</li>
-                                    <li>If the request has already been approved by either party, no further action is needed from that party.</li>
-                                </ul>
-                                <p>Should you have any questions or require further information, please feel free to reach out.</p>
-                                <p>Thank you for your attention to this matter.</p>
-                                <p class="footer">Best regards,<br></br>KESAN Leave Tracker System</p>
-                                </div>
-                            </body>
-                            </html>
-                        `
-                        }),
-                    }).then(async (res) => {
-                        if (!res.ok) {
-                        const error = await res.json();
-                        console.error("Email failed:", error.message);
-                        }
-                    });       
+
+                // normalize and deduplicate
+                const uniquePhones = Array.from(
+                    new Set(phonesToSend.map(p => (p ?? "").trim()))
+                ).filter(Boolean);
+
+                console.log("onSuccess triggered - program:", foundKey, "phonesToSend:", phonesToSend, "uniquePhones:", uniquePhones);
+
+                // Compose SMS message and ensure it's under 1500 chars
+                const smsMessage = [
+                  "Leave Request Submission for Approval.",
+                  `A leave request has been submitted by ${username}.`,
+                  `Review: ${MAIN_URL}/trackers_submit`,
+                  "",
+                  "Note: Executive Team AND the Program Director must approve. If already approved by one party, no action needed."
+                ].join("\n");
+
+                const MAX_SMS_LENGTH = 1500;
+                let safeMessage = smsMessage;
+                if (safeMessage.length > MAX_SMS_LENGTH) {
+                  safeMessage = safeMessage.slice(0, MAX_SMS_LENGTH - 1) + "…";
+                  console.warn("SMS message truncated to", MAX_SMS_LENGTH, "characters.");
+                }
+
+                // Send one request with the unique list
+                await fetch("/api/send-sms", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        to: uniquePhones,
+                        message: safeMessage,
+                    }),
+                }).then(async (res) => {
+                    const ct = res.headers.get("content-type") ?? "";
+                    const body = ct.includes("application/json") ? await res.json().catch(() => null) : await res.text().catch(() => null);
+                    if (!res.ok) {
+                        console.error("SMS failed:", body?.error ?? body ?? "(no body)");
+                    } else {
+                        console.log("SMS API accepted request", body);
+                    }
+                });
             } else {
-                console.error("Invalid program name:", programs, Object.keys(EMAIL_TO_SENDS));
+                console.error("Invalid program name:", programs, Object.keys(PHONE_TO_SENDS));
             }
+            // ...existing code...
 
         },
     })    

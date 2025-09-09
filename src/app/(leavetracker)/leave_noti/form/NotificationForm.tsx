@@ -17,11 +17,11 @@ import { InputDateWithLabel } from "@/components/inputs/inputDateWithLabel";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 
 // Use NEXT_PUBLIC_EMAIL_FOR_SEND_NOTIFICATION for client-side env variable
-const EMAIL_FOR_SEND_NOTIFICATION = process.env.NEXT_PUBLIC_EMAIL_FOR_SEND_NOTIFICATION
-  ? JSON.parse(process.env.NEXT_PUBLIC_EMAIL_FOR_SEND_NOTIFICATION)
+const PHONE_FOR_SEND_NOTIFICATION = process.env.NEXT_PUBLIC_PHONE_FOR_SEND_NOTIFICATION
+  ? JSON.parse(process.env.NEXT_PUBLIC_PHONE_FOR_SEND_NOTIFICATION)
   : []; 
 
-const NEXT_PUBLIC_MAIN_URL = process.env.NEXT_PUBLIC_MAIN_URL 
+const NEXT_PUBLIC_MAIN_URL = process.env.NEXT_PUBLIC_MAIN_URL
 
 type Props={
     employee:EmployeeSearchResultsType[0],
@@ -67,80 +67,78 @@ export default function TicketForm({
 
 
                 // Defensive check for empty recipients
-                if (!EMAIL_FOR_SEND_NOTIFICATION || EMAIL_FOR_SEND_NOTIFICATION.length === 0) {
-                    console.error("No email recipients defined in EMAIL_FOR_SEND_NOTIFICATION.");
+                if (!PHONE_FOR_SEND_NOTIFICATION || PHONE_FOR_SEND_NOTIFICATION.length === 0) {
+
                     return;
                 }
-                const allEmails = EMAIL_FOR_SEND_NOTIFICATION;
 
-                fetch("/api/send-email", {
+                // Normalize and dedupe phone numbers
+                const recipients = Array.from(
+                  new Set(
+                    PHONE_FOR_SEND_NOTIFICATION
+                    .map((p: string) => String(p ?? "").trim())
+                    .filter(Boolean)
+                  )
+                );
+
+                if (recipients.length === 0) {
+                  return;
+                }
+
+                // Compose a concise SMS-friendly message
+                function truncate(text: string, max: number) {
+                  if (!text) return "";
+                  return text.length > max ? text.slice(0, max - 1).trim() + "…" : text;
+                }
+
+                const link = `${NEXT_PUBLIC_MAIN_URL}/leave_notification/form?notificationId=${data?.id}`;
+                const maxSmsLength = 600; // safe limit (well below 1600)
+                const baseParts = [
+                  "✅ Leave Notification",
+                  `Type: ${data?.activityType ?? ""}`,
+                  `Submitted by: ${username}`,
+                  `Name: ${data?.fullName ?? ""}`,
+                ].filter(Boolean);
+
+                // Keep description short
+                const shortNotes = truncate(String(data?.description ?? ""), 300);
+
+                const parts = [
+                  ...baseParts,
+                  data?.travelWith ? `Travel with: ${truncate(data.travelWith, 80)}` : undefined,
+                  data?.leaveDate ? `Leave: ${data.leaveDate}` : undefined,
+                  data?.arrivalDate ? `Arrival: ${data.arrivalDate}` : undefined,
+                  shortNotes ? `Description: ${shortNotes}` : undefined,
+                  `View: ${link}`
+                ].filter(Boolean);
+
+                // join and ensure under maxSmsLength; if too long, aggressively truncate the body before the link
+                let smsMessage = parts.join("\n");
+                if (smsMessage.length > maxSmsLength) {
+                  // preserve link, truncate the rest
+                  const preservedLink = `\nView: ${link}`;
+                  const allowed = maxSmsLength - preservedLink.length - 1;
+                  smsMessage = truncate(parts.slice(0, -1).join(" "), allowed) + preservedLink;
+                }
+
+                // POST once with all deduped recipients
+                fetch("/api/send-sms", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
-                        to: allEmails,
-                        subject: `Notification of ${data?.activityType}`,
-                        body: `
-                            <html>
-                            <head>
-                                <style>
-                                body {
-                                    font-family: Arial, sans-serif;
-                                    color: #333;
-                                    margin: 0;
-                                    padding: 20px;
-                                    background-color: #f4f4f4;
-                                }
-                                .email-container {
-                                    background-color: #ffffff;
-                                    border-radius: 8px;
-                                    padding: 20px;
-                                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                                }
-                                h2 {
-                                    color: #333;
-                                }
-                                p {
-                                    font-size: 14px;
-                                    line-height: 1.6;
-                                }
-                                .important {
-                                    font-weight: bold;
-                                    color: #e74c3c;
-                                }
-                                a {
-                                    color: #3498db;
-                                    text-decoration: none;
-                                }
-                                .footer {
-                                    font-size: 12px;
-                                    color: #777;
-                                    margin-top: 20px;
-                                }
-                                </style>
-                            </head>
-                            <body>
-                                <div class="email-container">
-                                <h2>Notification: ${data?.activityType}</h2>
-                                <p>Dear Admin and Program Directors,</p>
-                                <p>I hope this message finds you well. This notification was submitted by ${username}</p>
-                                <p>The detailed information is provided below:</p>
-                                <p><strong>Full Name:</strong> ${data?.fullName}</p>
-                                <p><strong>Activity Type:</strong> ${data?.activityType}</p>
-                                <p><strong>Travel With:</strong> ${data?.travelWith}</p>
-                                <p><strong>Description:</strong> ${data?.description}</p>
-                                <p><strong>Leave Date:</strong> ${data?.leaveDate}</p>
-                                <p><strong>Arrival Date:</strong> ${data?.arrivalDate}</p>
-                                <p><a href="${NEXT_PUBLIC_MAIN_URL}/leave_notification/form?notificationId=${data?.id}">You can read in admin dashboard by clicking the link</a></p>
-                                </div>
-                            </body>
-                            </html>
-                        `
+                        to: recipients,
+                        message: smsMessage,
                     }),
                 }).then(async (res) => {
+                    const ct = res.headers.get("content-type") ?? "";
+                    const body = ct.includes("application/json") ? await res.json().catch(()=>null) : await res.text().catch(()=>null);
                     if (!res.ok) {
-                        const error = await res.json();
-                        console.error("Email failed:", error.message);
+                        console.error("SMS failed:", body ?? "(no body)");
+                    } else {
+                        console.log("SMS request accepted", body);
                     }
+                }).catch(err => {
+                    console.error("Failed to call /api/send-sms:", err);
                 });
             },
     })    
