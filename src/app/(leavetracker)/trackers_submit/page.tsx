@@ -38,7 +38,6 @@ export default async function TrackerPage() {
     for (const tracker of allTracker) {
       const program_id = tracker.program;
       const program = await getDepartment(Number(program_id));
-      console.log("tracker program:", program?.name, "employee program:", employee_program);
       if (employee_program === program?.name) {
         filteredByProgram.push(tracker);
       }

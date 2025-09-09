@@ -23,24 +23,7 @@ export default function Home() {
           </div>
 
 
-        </div>
-        <div>
-          <button className="cursor-pointer"
-            onClick={async () => {
-              console.log("clicked")
-              await fetch("/api/send-sms", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  to: "+66943579062",
-                  message: "Hello from KESAN Leave Tracker!"
-                }),
-              });
-            }}
-          >
-            SendMessage
-          </button>
-        </div>     
+        </div>   
       </main>
     
     </div>

@@ -1,6 +1,6 @@
 import { db } from "@/db";
 import { trackers, employee, trackertypes } from "@/db/schema";
-import { eq, asc } from "drizzle-orm";
+import { eq, asc, desc } from "drizzle-orm";
 
 export default async function getAllTrackers() {
   const rawResults = await db
