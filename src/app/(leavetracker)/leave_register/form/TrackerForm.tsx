@@ -23,7 +23,6 @@ const PHONE_TO_SENDS = process.env.NEXT_PUBLIC_PHONE_TO_SENDS
 const PHONE_EXECUTIVE_DIRECTOR = process.env.NEXT_PUBLIC_PHONE_OF_EXECUTIVE_DIRECTOR
     ? JSON.parse(process.env.NEXT_PUBLIC_PHONE_OF_EXECUTIVE_DIRECTOR)
     : [];
-const MAIN_URL = process.env.NEXT_PUBLIC_MAIN_URL
 import { insertTrackerSchema,type insertTrackerSchemaType,type selectTrackerSchemaType
 
  } from "@/zod-schemas/tracker"
@@ -102,7 +101,6 @@ export default function TicketForm({
                 const smsMessage = [
                   "Leave Request Submission for Approval.",
                   `A leave request has been submitted by ${username}.`,
-                  `Review: ${MAIN_URL}/trackers_submit`,
                   "",
                   "Note: Executive Team AND the Program Director must approve. If already approved by one party, no action needed."
                 ].join("\n");

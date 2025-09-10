@@ -19,9 +19,8 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const results = await Promise.all(
-      recipients.map((recipient: string) => sendSms(recipient, String(message)))
-    );
+    // sendSms now handles multiple recipients in parallel
+    const results = await sendSms(recipients, String(message));
     return NextResponse.json({ success: true, sent: results.length, results });
   } catch (err) {
     const errorMsg = err instanceof Error ? err.message : String(err);

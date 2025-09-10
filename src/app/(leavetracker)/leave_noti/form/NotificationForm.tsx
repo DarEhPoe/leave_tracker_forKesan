@@ -109,7 +109,6 @@ export default function TicketForm({
                   data?.leaveDate ? `Leave: ${data.leaveDate}` : undefined,
                   data?.arrivalDate ? `Arrival: ${data.arrivalDate}` : undefined,
                   shortNotes ? `Description: ${shortNotes}` : undefined,
-                  `View: ${link}`
                 ].filter(Boolean);
 
                 // join and ensure under maxSmsLength; if too long, aggressively truncate the body before the link
